@@ -16,6 +16,13 @@ def cmd_list(args):
         print(f"{i}. [{mark}] {item['text']}")
 
 
+def cmd_done(args):
+    items = store.load()
+    items[args.index - 1]["done"] = True
+    store.save(items)
+    print(f"Completed: {items[args.index - 1]['text']}")
+
+
 def main():
     parser = argparse.ArgumentParser(prog="todo")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -26,6 +33,10 @@ def main():
 
     p_list = sub.add_parser("list", help="list tasks")
     p_list.set_defaults(func=cmd_list)
+
+    p_done = sub.add_parser("done", help="mark a task as done")
+    p_done.add_argument("index", type=int)
+    p_done.set_defaults(func=cmd_done)
 
     args = parser.parse_args()
     args.func(args)
