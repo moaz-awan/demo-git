@@ -18,6 +18,8 @@ def cmd_list(args):
 
 def cmd_done(args):
     items = store.load()
+    if not 1 <= args.index <= len(items):
+        raise SystemExit(f"No task #{args.index}")
     items[args.index - 1]["done"] = True
     store.save(items)
     print(f"Completed: {items[args.index - 1]['text']}")
