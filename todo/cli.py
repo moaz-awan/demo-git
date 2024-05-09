@@ -25,6 +25,15 @@ def cmd_done(args):
     print(f"Completed: {items[args.index - 1]['text']}")
 
 
+def cmd_remove(args):
+    items = store.load()
+    if not 1 <= args.index <= len(items):
+        raise SystemExit(f"No task #{args.index}")
+    removed = items.pop(args.index - 1)
+    store.save(items)
+    print(f"Removed: {removed['text']}")
+
+
 def main():
     parser = argparse.ArgumentParser(prog="todo")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -39,6 +48,10 @@ def main():
     p_done = sub.add_parser("done", help="mark a task as done")
     p_done.add_argument("index", type=int)
     p_done.set_defaults(func=cmd_done)
+
+    p_rm = sub.add_parser("remove", help="delete a task")
+    p_rm.add_argument("index", type=int)
+    p_rm.set_defaults(func=cmd_remove)
 
     args = parser.parse_args()
     args.func(args)

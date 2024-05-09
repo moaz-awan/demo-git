@@ -8,4 +8,5 @@ A tiny command-line to-do manager written in Python.
 python -m todo add "Buy milk"
 python -m todo list
 python -m todo done 1
+python -m todo remove 1
 ```
