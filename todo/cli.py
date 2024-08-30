@@ -11,7 +11,12 @@ def cmd_add(args):
 
 
 def cmd_list(args):
-    for i, item in enumerate(store.load(), 1):
+    items = store.load()
+    if args.pending:
+        items = [i for i in items if not i["done"]]
+    if not items:
+        print("Nothing to do.")
+    for i, item in enumerate(items, 1):
         mark = "x" if item["done"] else " "
         print(f"{i}. [{mark}] {item['text']}")
 
@@ -43,6 +48,7 @@ def main():
     p_add.set_defaults(func=cmd_add)
 
     p_list = sub.add_parser("list", help="list tasks")
+    p_list.add_argument("--pending", action="store_true", help="hide finished tasks")
     p_list.set_defaults(func=cmd_list)
 
     p_done = sub.add_parser("done", help="mark a task as done")
