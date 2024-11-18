@@ -10,3 +10,10 @@ python -m todo list
 python -m todo done 1
 python -m todo remove 1
 ```
+
+## Install
+
+```bash
+pip install .
+todo list --pending
+```
